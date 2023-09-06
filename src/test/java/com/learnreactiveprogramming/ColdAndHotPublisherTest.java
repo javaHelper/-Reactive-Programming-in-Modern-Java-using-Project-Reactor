@@ -14,7 +14,6 @@ public class ColdAndHotPublisherTest {
 
     @Test
     public void coldPublisherTest() throws InterruptedException {
-
         var flux = Flux.range(1, 10);
 
         flux.subscribe(s -> System.out.println("Subscriber 1 : " + s)); //emits the value from beginning
@@ -23,7 +22,6 @@ public class ColdAndHotPublisherTest {
 
     @Test
     public void hotPublisherTest() throws InterruptedException {
-
         Flux<Integer> stringFlux = Flux.range(1, 10)
                 .delayElements(Duration.ofSeconds(1));
 
@@ -34,12 +32,10 @@ public class ColdAndHotPublisherTest {
         Thread.sleep(1000);
         connectableFlux.subscribe(s -> System.out.println("Subscriber 2 : " + s)); // does not get the values from beginning
         Thread.sleep(10000);
-
     }
 
     @Test
     public void hotPublisherTest_autoConnect() throws InterruptedException {
-
         Flux<Integer> stringFlux = Flux.range(1, 10)
                 .doOnSubscribe(s -> {
                     System.out.println("Subscription started");

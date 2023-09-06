@@ -17,15 +17,10 @@ class MovieInfoServiceTest {
 
     @Test
     void movieInfoFlux() {
-        //given
-
-        //when
         var movieInfoFlux = movieInfoService.retrieveAllMovieInfo_RestClient();
-
-        //then
         StepVerifier.create(movieInfoFlux)
                 //.expectNextCount(7)
-                .assertNext( movieInfo ->
+                .assertNext(movieInfo ->
                         assertEquals("Batman Begins", movieInfo.getName())
 
                 )
@@ -35,19 +30,13 @@ class MovieInfoServiceTest {
 
     @Test
     void retrieveMovieInfoById_RestClient() {
-
-        //given
         Long movieInfoId = 1L;
-
-        //when
         var movieInfoFlux = movieInfoService.retrieveMovieInfoById_RestClient(movieInfoId);
 
-        //then
         StepVerifier.create(movieInfoFlux)
                 //.expectNextCount(7)
-                .assertNext( movieInfo ->
+                .assertNext(movieInfo ->
                         assertEquals("Batman Begins", movieInfo.getName())
-
                 )
                 .verifyComplete();
     }

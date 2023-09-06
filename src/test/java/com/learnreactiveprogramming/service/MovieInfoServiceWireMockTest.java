@@ -24,7 +24,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 class MovieInfoServiceWireMockTest {
 
     @InjectServer
-    WireMockServer wireMockServer;
+    private WireMockServer wireMockServer;
 
     @ConfigureWireMock
     Options options = wireMockConfig().

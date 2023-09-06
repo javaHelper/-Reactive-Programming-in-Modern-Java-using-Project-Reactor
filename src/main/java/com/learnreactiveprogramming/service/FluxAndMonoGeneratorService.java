@@ -589,12 +589,10 @@ public class FluxAndMonoGeneratorService {
                     if (name.length() > 3)
                         sink.next(name);
                 });
-
     }
 
 
     public Mono<String> explore_mono_create() {
-
         Mono<String> abc = Mono.create(sink -> {
             delay(1000);
             sink.success("abc");
@@ -604,17 +602,11 @@ public class FluxAndMonoGeneratorService {
     }
 
     public void sendEvents(FluxSink<String> sink) {
-        {
-            CompletableFuture.supplyAsync(() -> names()) // place the blocking call inside the create function
-                    .thenAccept(names -> {
-                        names.forEach((s) -> {
-                            sink.next(s);
-                        });
-                    })
-                    .thenRun(() -> {
-                        sink.complete();
-                    });
-        }
+        CompletableFuture.supplyAsync(() -> names()) // place the blocking call inside the create function
+                .thenAccept(names -> {
+                    names.forEach(sink::next);
+                })
+                .thenRun(sink::complete);
     }
 
     /***
@@ -635,25 +627,18 @@ public class FluxAndMonoGeneratorService {
     }
 
     private Flux<String> delayString(String string) {
-
         var delay = new Random().nextInt(1000);
         return Flux.just(string)
                 .delayElements(Duration.ofMillis(delay));
     }
 
-    /**
-     * @param stringLength
-     * @return AL, EX, CH, LO, E
-     */
+
     public Flux<String> namesFlux_flatmap_sequential(int stringLength) {
-        var namesList = List.of("alex", "ben", "chloe"); // a, l, e , x
-        return Flux.fromIterable(namesList)
+        return Flux.fromIterable(List.of("alex", "ben", "chloe"))
                 .map(String::toUpperCase)
                 .filter(s -> s.length() > stringLength)
                 .flatMap(this::splitString)
                 .log();
-        //using "map" would give the return type as Flux<Flux<String>
-
     }
 
     private Flux<String> lowercase(Flux<String> stringFlux) {
